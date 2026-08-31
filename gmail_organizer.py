@@ -39,7 +39,7 @@ AUTOMATED_SENDER_PATTERNS = re.compile(
 
 
 def load_config(path=CONFIG_PATH):
-    with open(path, encoding="utf-8") as f:
+    with open(path, encoding="utf-8-sig") as f:
         raw = json.load(f)
 
     # JSON can't express sets/tuples natively, so normalize on load.

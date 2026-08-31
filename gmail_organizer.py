@@ -73,6 +73,10 @@ def get_service():
         github_output = os.environ.get("GITHUB_OUTPUT")
         if github_output:
             token_json = creds.to_json().replace("\n", "")
+            # Mask the token in Action logs before it appears anywhere,
+            # since it never went through `secrets.*` (GitHub only
+            # auto-masks values it already knows are secret).
+            print(f"::add-mask::{token_json}")
             with open(github_output, "a", encoding="utf-8") as f:
                 f.write(f"updated_token={token_json}\n")
 

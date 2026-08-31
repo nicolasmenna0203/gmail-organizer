@@ -1,0 +1,85 @@
+{
+  "labels": {
+    "Finance": "Label_2",
+    "Promotions": "Label_3",
+    "Accounts & Security": "Label_4",
+    "Personal": "Label_5",
+    "Shopping": "Label_6"
+  },
+  "unsubscribed": [
+    "newsletter@example-retailer.com",
+    "no-reply@example-bank.com",
+    "promo@example-store.com"
+  ],
+  "tagging_rules": [
+    {
+      "label": "Accounts & Security",
+      "sender_patterns": [],
+      "subject_patterns": [
+        "verification", "security code", "access code", "sign-in",
+        "password", "authentication", "two-factor", "2fa", "security alert",
+        "account confirmation", "verify your"
+      ]
+    },
+    {
+      "label": "Accounts & Security",
+      "sender_patterns": [
+        "noreply@github.com", "noreply-accounts@google.com",
+        "security@", "no-reply@accounts.", "accounts-noreply@",
+        "alert@", "noreply@microsoft.com", "account-security@"
+      ],
+      "subject_patterns": []
+    },
+    {
+      "label": "Finance",
+      "sender_patterns": [
+        "@examplebank.com", "notifications@examplepay.com",
+        "no-reply@examplebroker.com", "info@paypal", "service@paypal",
+        "@stripe.com"
+      ],
+      "subject_patterns": []
+    },
+    {
+      "label": "Finance",
+      "sender_patterns": [
+        "@examplebank.com", "examplebank", "@examplepay.com", "examplepay"
+      ],
+      "subject_patterns": [
+        "transfer", "payment", "statement", "receipt", "debit", "credit",
+        "installment", "investment", "withdrawal", "deposit", "balance",
+        "refund", "invoice", "due date"
+      ]
+    },
+    {
+      "label": "Shopping",
+      "sender_patterns": [
+        "no-reply@amazon", "shipment-tracking@amazon", "orders@",
+        "receipt@", "noreply@uber.com", "@store.steampowered"
+      ],
+      "subject_patterns": []
+    },
+    {
+      "label": "Shopping",
+      "sender_patterns": [],
+      "subject_patterns": [
+        "your order", "order confirmed", "purchase confirmed",
+        "shipped your", "your package", "thanks for your purchase"
+      ]
+    },
+    {
+      "label": "Promotions",
+      "sender_patterns": [
+        "newsletter@", "marketing@", "promo@", "offers@", "news@"
+      ],
+      "subject_patterns": []
+    },
+    {
+      "label": "Promotions",
+      "sender_patterns": [],
+      "subject_patterns": [
+        "% off", "discount", "deal", "sale", "reward", "points",
+        "newsletter", "unsubscribe"
+      ]
+    }
+  ]
+}

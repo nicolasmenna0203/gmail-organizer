@@ -37,8 +37,7 @@ jobs:
       # so it doesn't expire on the next run.
       - name: Update token secret if refreshed
         if: steps.organizer.outputs.updated_token != ''
-        uses: gliech/create-github-secret-action@v1
-        with:
-          name: GMAIL_TOKEN_JSON
-          value: ${{ steps.organizer.outputs.updated_token }}
-          token: ${{ secrets.GH_PAT }}
+        env:
+          GH_TOKEN: ${{ secrets.GH_PAT }}
+          UPDATED_TOKEN: ${{ steps.organizer.outputs.updated_token }}
+        run: echo "$UPDATED_TOKEN" | gh secret set GMAIL_TOKEN_JSON --repo "$GITHUB_REPOSITORY"

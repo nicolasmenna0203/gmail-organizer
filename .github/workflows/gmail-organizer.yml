@@ -33,6 +33,18 @@ jobs:
           GMAIL_TOKEN_JSON: ${{ secrets.GMAIL_TOKEN_JSON }}
         run: python gmail_organizer.py
 
+      # TEMP DEBUG: force-test the GH_PAT / gh secret set path regardless of
+      # whether the token actually needed a refresh, to confirm the fix.
+      - name: DEBUG - test gh secret set with GH_PAT
+        env:
+          GH_TOKEN: ${{ secrets.GH_PAT }}
+        run: |
+          unset GITHUB_TOKEN
+          echo "gh auth status:"
+          gh auth status || true
+          echo "attempting to re-set GMAIL_ORGANIZER_CONFIG_JSON (no-op value change) as a live test:"
+          gh secret set DEBUG_PAT_TEST --repo "$GITHUB_REPOSITORY" --body "ok"
+
       # If the OAuth token was refreshed during the run, update the secret
       # so it doesn't expire on the next run.
       - name: Update token secret if refreshed

@@ -39,10 +39,15 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GH_PAT }}
         run: |
-          unset GITHUB_TOKEN
-          echo "gh auth status:"
+          echo "--- gh config hosts.yml (if any) ---"
+          cat ~/.config/gh/hosts.yml 2>/dev/null || echo "(none)"
+          echo "--- env tokens present ---"
+          env | grep -i token | sed 's/=.*/=<redacted>/'
+          echo "--- gh auth status ---"
           gh auth status || true
-          echo "attempting to re-set GMAIL_ORGANIZER_CONFIG_JSON (no-op value change) as a live test:"
+          echo "--- gh api /user with explicit --hostname and token ---"
+          GH_TOKEN="${GH_TOKEN}" gh api user --jq .login || true
+          echo "--- attempting secret set ---"
           gh secret set DEBUG_PAT_TEST --repo "$GITHUB_REPOSITORY" --body "ok"
 
       # If the OAuth token was refreshed during the run, update the secret

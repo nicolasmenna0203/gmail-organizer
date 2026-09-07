@@ -37,18 +37,17 @@ jobs:
       # whether the token actually needed a refresh, to confirm the fix.
       - name: DEBUG - test gh secret set with GH_PAT
         env:
-          GH_TOKEN: ${{ secrets.GH_PAT }}
+          MY_GH_PAT: ${{ secrets.GH_PAT }}
         run: |
-          echo "--- gh config hosts.yml (if any) ---"
-          cat ~/.config/gh/hosts.yml 2>/dev/null || echo "(none)"
-          echo "--- env tokens present ---"
-          env | grep -i token | sed 's/=.*/=<redacted>/'
-          echo "--- gh auth status ---"
-          gh auth status || true
-          echo "--- gh api /user with explicit --hostname and token ---"
-          GH_TOKEN="${GH_TOKEN}" gh api user --jq .login || true
-          echo "--- attempting secret set ---"
-          gh secret set DEBUG_PAT_TEST --repo "$GITHUB_REPOSITORY" --body "ok"
+          echo "--- token length as seen in this step ---"
+          echo -n "$MY_GH_PAT" | wc -c
+          echo "--- token first/last 6 chars ---"
+          echo "${MY_GH_PAT:0:6}...${MY_GH_PAT: -6}"
+          echo "--- curl directly, bypassing gh entirely ---"
+          curl -s -H "Authorization: Bearer $MY_GH_PAT" -H "Accept: application/vnd.github+json" https://api.github.com/user
+          echo ""
+          echo "--- now via gh with GH_TOKEN set inline ---"
+          GH_TOKEN="$MY_GH_PAT" gh api user --jq .login || true
 
       # If the OAuth token was refreshed during the run, update the secret
       # so it doesn't expire on the next run.
@@ -57,7 +56,4 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GH_PAT }}
           UPDATED_TOKEN: ${{ steps.organizer.outputs.updated_token }}
-        run: |
-          unset GITHUB_TOKEN
-          gh auth status || true
-          echo "$UPDATED_TOKEN" | gh secret set GMAIL_TOKEN_JSON --repo "$GITHUB_REPOSITORY"
+        run: echo "$UPDATED_TOKEN" | gh secret set GMAIL_TOKEN_JSON --repo "$GITHUB_REPOSITORY"

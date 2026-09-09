@@ -70,8 +70,9 @@
     {
       "label": "Education",
       "sender_patterns": [
-        "@example-university.edu", "@example-bootcamp.com",
-        "no-reply@m.learn.example-mooc.org"
+        ".edu",
+        "@example-bootcamp.com",
+        "coursera.org", "@udemy.com", "@edx.org"
       ],
       "subject_patterns": []
     },
